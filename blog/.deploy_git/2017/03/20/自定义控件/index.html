@@ -1,0 +1,802 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="笔记,view," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="自定义控件学习笔记总体调用流程ViewRootImpl 是View开始的入口ViewRootImpl中会首先调用performTraversals()12345678910111213private void performTraversals() &amp;#123; //android19  ...  //获得最上层控件的MeasureSpec1672 int childWidthMeasureSpe">
+<meta name="keywords" content="笔记,view">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义控件">
+<meta property="og:url" content="http://yoursite.com/2017/03/20/自定义控件/index.html">
+<meta property="og:site_name" content="薛定谔">
+<meta property="og:description" content="自定义控件学习笔记总体调用流程ViewRootImpl 是View开始的入口ViewRootImpl中会首先调用performTraversals()12345678910111213private void performTraversals() &amp;#123; //android19  ...  //获得最上层控件的MeasureSpec1672 int childWidthMeasureSpe">
+<meta property="og:updated_time" content="2017-04-19T05:53:35.014Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义控件">
+<meta name="twitter:description" content="自定义控件学习笔记总体调用流程ViewRootImpl 是View开始的入口ViewRootImpl中会首先调用performTraversals()12345678910111213private void performTraversals() &amp;#123; //android19  ...  //获得最上层控件的MeasureSpec1672 int childWidthMeasureSpe">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/20/自定义控件/"/>
+
+
+
+
+
+  <title> 自定义控件 | 薛定谔 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?60aa663d33fe2a71d585c309366f96ff";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">薛定谔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/20/自定义控件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="eason">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://omy391n59.bkt.clouddn.com/image/jpg/avater.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="薛定谔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                自定义控件
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-20T14:58:21+08:00">
+                2017-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/自定义view/" itemprop="url" rel="index">
+                    <span itemprop="name">自定义view</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="自定义控件学习笔记"><a href="#自定义控件学习笔记" class="headerlink" title="自定义控件学习笔记"></a>自定义控件学习笔记</h1><h2 id="总体调用流程"><a href="#总体调用流程" class="headerlink" title="总体调用流程"></a>总体调用流程</h2><h3 id="ViewRootImpl-是View开始的入口"><a href="#ViewRootImpl-是View开始的入口" class="headerlink" title="ViewRootImpl 是View开始的入口"></a>ViewRootImpl 是View开始的入口</h3><h3 id="ViewRootImpl中会首先调用performTraversals"><a href="#ViewRootImpl中会首先调用performTraversals" class="headerlink" title="ViewRootImpl中会首先调用performTraversals()"></a>ViewRootImpl中会首先调用performTraversals()</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">performTraversals</span><span class="params">()</span> </span>&#123; <span class="comment">//android19</span></div><div class="line">  ...</div><div class="line">  <span class="comment">//获得最上层控件的MeasureSpec</span></div><div class="line"><span class="number">1672</span> <span class="keyword">int</span> childWidthMeasureSpec = getRootMeasureSpec(mWidth, lp.width);</div><div class="line"><span class="number">1673</span> <span class="keyword">int</span> childHeightMeasureSpec = getRootMeasureSpec(mHeight, lp.height);</div><div class="line"></div><div class="line">  <span class="comment">// Ask host how big it wants to be</span></div><div class="line"><span class="number">1682</span> performMeasure(childWidthMeasureSpec, childHeightMeasureSpec);</div><div class="line">...</div><div class="line"><span class="number">1744</span> performLayout(lp, desiredWindowWidth, desiredWindowHeight);</div><div class="line">...</div><div class="line"><span class="number">1883</span> performDraw(); <span class="comment">//进入DecorView中最终调用View的Draw()</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">performMeasure</span><span class="params">(<span class="keyword">int</span> childWidthMeasureSpec, <span class="keyword">int</span> childHeightMeasureSpec)</span> </span>&#123;</div><div class="line">      mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);</div><div class="line">&#125;</div><div class="line"><span class="comment">//例如LinearLayout的Onmeasure中就会调用走正常的测量流程</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">measureChildBeforeLayout</span><span class="params">(View child, <span class="keyword">int</span> childIndex,</span></span></div><div class="line">            <span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> totalWidth, <span class="keyword">int</span> heightMeasureSpec,</div><div class="line">            <span class="keyword">int</span> totalHeight) &#123;</div><div class="line">        measureChildWithMargins(child, widthMeasureSpec, totalWidth,</div><div class="line">                heightMeasureSpec, totalHeight);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">performLayout</span><span class="params">(WindowManager.LayoutParams lp, <span class="keyword">int</span> desiredWindowWidth,</span></span></div><div class="line">            <span class="keyword">int</span> desiredWindowHeight) &#123;</div><div class="line">            host.layout(<span class="number">0</span>, <span class="number">0</span>, host.getMeasuredWidth(), host.getMeasuredHeight());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="measure"><a href="#measure" class="headerlink" title="measure"></a>measure</h2><h3 id="ViewGroup-中measureChildWithMargins-调用-View的measure"><a href="#ViewGroup-中measureChildWithMargins-调用-View的measure" class="headerlink" title="ViewGroup 中measureChildWithMargins 调用 View的measure()"></a>ViewGroup 中measureChildWithMargins 调用 View的measure()</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">measureChildWithMargins</span><span class="params">(View child,</span></span></div><div class="line">          <span class="keyword">int</span> parentWidthMeasureSpec, <span class="keyword">int</span> widthUsed,</div><div class="line">          <span class="keyword">int</span> parentHeightMeasureSpec, <span class="keyword">int</span> heightUsed) &#123;</div><div class="line">             <span class="comment">//获取child的LayoutParams</span></div><div class="line">      <span class="keyword">final</span> MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();</div><div class="line"></div><div class="line">      <span class="keyword">final</span> <span class="keyword">int</span> childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,</div><div class="line">              mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin + widthUsed,</div><div class="line">              lp.width);</div><div class="line">      <span class="keyword">final</span> <span class="keyword">int</span> childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,</div><div class="line">              mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin + heightUsed,</div><div class="line">              lp.height);</div><div class="line">              <span class="comment">//调用child的measure方法</span></div><div class="line">      child.measure(childWidthMeasureSpec, childHeightMeasureSpec);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>其中getChildMeasureSpeac(int spec, int padding, int childDimension)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getChildMeasureSpec</span><span class="params">(<span class="keyword">int</span> spec, <span class="keyword">int</span> padding, <span class="keyword">int</span> childDimension)</span> </span>&#123;</div><div class="line">       <span class="comment">//获取ViewGroup的参数</span></div><div class="line">       <span class="keyword">int</span> specMode = MeasureSpec.getMode(spec);</div><div class="line">       <span class="keyword">int</span> specSize = MeasureSpec.getSize(spec);</div><div class="line">       <span class="comment">//获取可以使用的最大的size</span></div><div class="line">       <span class="keyword">int</span> size = Math.max(<span class="number">0</span>, specSize - padding);</div><div class="line"></div><div class="line">       <span class="keyword">int</span> resultSize = <span class="number">0</span>;</div><div class="line">       <span class="keyword">int</span> resultMode = <span class="number">0</span>;</div><div class="line"></div><div class="line">       <span class="comment">//根据父控件的specMode分配子空间的大小 和 方式</span></div><div class="line">       <span class="keyword">switch</span> (specMode) &#123;</div><div class="line">       <span class="keyword">case</span> MeasureSpec.EXACTLY:</div><div class="line">       <span class="comment">//childDimension是child的具体设置高度 如果&lt;0则是match 或者 wrap</span></div><div class="line">           <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) &#123;</div><div class="line">               resultSize = childDimension;</div><div class="line">               resultMode = MeasureSpec.EXACTLY;</div><div class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) &#123;</div><div class="line">               resultSize = size;</div><div class="line">               resultMode = MeasureSpec.EXACTLY;</div><div class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) &#123;</div><div class="line">               resultSize = size;</div><div class="line">               resultMode = MeasureSpec.AT_MOST;</div><div class="line">           &#125;</div><div class="line">           <span class="keyword">break</span>;</div><div class="line"></div><div class="line">       <span class="keyword">case</span> MeasureSpec.AT_MOST:</div><div class="line">           <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) &#123;</div><div class="line">               resultSize = childDimension;</div><div class="line">               resultMode = MeasureSpec.EXACTLY;</div><div class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) &#123;</div><div class="line">               resultSize = size;</div><div class="line">               resultMode = MeasureSpec.AT_MOST;</div><div class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) &#123;</div><div class="line">               resultSize = size;</div><div class="line">               resultMode = MeasureSpec.AT_MOST;</div><div class="line">           &#125;</div><div class="line">           <span class="keyword">break</span>;</div><div class="line"></div><div class="line">       <span class="comment">// 一般不会使用 这个代表不会管理子View的大小 例如ScrollView</span></div><div class="line">       <span class="keyword">case</span> MeasureSpec.UNSPECIFIED:</div><div class="line">           <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) &#123;</div><div class="line">               resultSize = childDimension;</div><div class="line">               resultMode = MeasureSpec.EXACTLY;</div><div class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) &#123;</div><div class="line">               <span class="comment">//View.sUseZeroUnspecifiedMeasureSpec=true 5.0以下</span></div><div class="line">               <span class="comment">//5.0 以上 就是 false</span></div><div class="line">               resultSize = View.sUseZeroUnspecifiedMeasureSpec ? <span class="number">0</span> : size;</div><div class="line">               resultMode = MeasureSpec.UNSPECIFIED;</div><div class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) &#123;</div><div class="line">               resultSize = View.sUseZeroUnspecifiedMeasureSpec ? <span class="number">0</span> : size;</div><div class="line">               resultMode = MeasureSpec.UNSPECIFIED;</div><div class="line">           &#125;</div><div class="line">           <span class="keyword">break</span>;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> MeasureSpec.makeMeasureSpec(resultSize, resultMode);</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>總的來説就是這樣的 MeasureSpec.UNSPECIFIED 5.0 以上以下有区别 一般不会用到</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Child \ Parent</th>
+<th style="text-align:center">MeasureSpec.EXACTLY</th>
+<th style="text-align:center">MeasureSpec.AT_MOST</th>
+<th style="text-align:center">MeasureSpec.UNSPECIFIED</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">具體尺寸</td>
+<td style="text-align:center">size=具體 MeasureSpec.EXACTLY</td>
+<td style="text-align:center">size=具體 MeasureSpec.EXACTLY</td>
+<td style="text-align:center">size = 具體   MeasureSpec.EXACTLY</td>
+</tr>
+<tr>
+<td style="text-align:center">WRAP_CONTENT</td>
+<td style="text-align:center">size=size MeasureSpec.AT_MOST</td>
+<td style="text-align:center">size=size MeasureSpec.AT_MOST</td>
+<td style="text-align:center">size=size MeasureSpec.UNSPECIFIED</td>
+</tr>
+<tr>
+<td style="text-align:center">MATCH_PARENT</td>
+<td style="text-align:center">size=size MeasureSpec.EXACTLY</td>
+<td style="text-align:center">size=size MeasureSpec.AT_MOST</td>
+<td style="text-align:center">size=size MeasureSpec.UNSPECIFIED</td>
+</tr>
+</tbody>
+</table>
+<h3 id="view的measure-childWidthMeasureSpec-childHeightMeasureSpec-方法"><a href="#view的measure-childWidthMeasureSpec-childHeightMeasureSpec-方法" class="headerlink" title="view的measure(childWidthMeasureSpec, childHeightMeasureSpec)方法"></a>view的measure(childWidthMeasureSpec, childHeightMeasureSpec)方法</h3><p> measure()—这个方法用于设定这个子View到底有多大，并且调用onMeasure()方法<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">      setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),</div><div class="line">              getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>getSuggestedMinimumHeight() 与 getSuggestedMinimumWidth() 方法雷同 用于计算 最小的值 背景与view自身设置的值<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">getSuggestedMinimumWidth</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> (mBackground == <span class="keyword">null</span>) ? mMinWidth : max(mMinWidth, mBackground.getMinimumWidth());</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>getDefaultSize() 最终根据自身的MeasureSpec.Mode 来决定自身到底有多大<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getDefaultSize</span><span class="params">(<span class="keyword">int</span> size, <span class="keyword">int</span> measureSpec)</span> </span>&#123;</div><div class="line">       <span class="keyword">int</span> result = size;</div><div class="line">       <span class="keyword">int</span> specMode = MeasureSpec.getMode(measureSpec);</div><div class="line">       <span class="keyword">int</span> specSize = MeasureSpec.getSize(measureSpec);</div><div class="line"></div><div class="line">       <span class="keyword">switch</span> (specMode) &#123;</div><div class="line">       <span class="keyword">case</span> MeasureSpec.UNSPECIFIED:  </div><div class="line">           result = size; <span class="comment">//这个size是getSuggestedMinimumWidth中获得的最小度  一般=不会用到 但是在lsitView中高度设定不相符时使用min来设定可以确定高度</span></div><div class="line">           <span class="keyword">break</span>;</div><div class="line">       <span class="keyword">case</span> MeasureSpec.AT_MOST:</div><div class="line">       <span class="keyword">case</span> MeasureSpec.EXACTLY:</div><div class="line">           result = specSize;</div><div class="line">           <span class="keyword">break</span>;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> result;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="重点强调的是-自定义控件的onmeasure方法重写-必须设定WRAP-CONTENT时的状态"><a href="#重点强调的是-自定义控件的onmeasure方法重写-必须设定WRAP-CONTENT时的状态" class="headerlink" title="重点强调的是 自定义控件的onmeasure方法重写 必须设定WRAP_CONTENT时的状态"></a>重点强调的是 自定义控件的onmeasure方法重写 必须设定WRAP_CONTENT时的状态</h3><p>因为在WRAP_CONTENT情况下 measure的模式为MeasureSpec,AT_MOST 并且大小也与父控件大小相同 这样的话 WRAP_CONTENT就与MATCH_PARENT的效果相同 必须要重写设置大小<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line"></div><div class="line">       <span class="keyword">int</span> widthMode = MeasureSpec.getMode(widthMeasureSpec);</div><div class="line">       <span class="keyword">int</span> heightMode = MeasureSpec.getMode(heightMeasureSpec);</div><div class="line"></div><div class="line">       <span class="keyword">int</span> width = <span class="number">100</span>; <span class="comment">//这个高度宽度需要计算 计算出自己到底需要多少</span></div><div class="line">       <span class="keyword">int</span> height = <span class="number">100</span>;</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (widthMode == MeasureSpec.AT_MOST &amp;&amp; heightMode == MeasureSpec.AT_MOST) &#123; <span class="comment">// 添加判断才可以确定具体尺寸来设置WRAP_CONTENT</span></div><div class="line">           setMeasuredDimension(width, height);</div><div class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (widthMode == MeasureSpec.AT_MOST) &#123;</div><div class="line">           setMeasuredDimension(width, getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));</div><div class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (height == MeasureSpec.AT_MOST) &#123;</div><div class="line">           setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec), height);</div><div class="line">       &#125; <span class="keyword">else</span> &#123;</div><div class="line">           <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line">       &#125;</div><div class="line"></div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="知識點-在ScrollView嵌套ListView中我們經常這樣寫"><a href="#知識點-在ScrollView嵌套ListView中我們經常這樣寫" class="headerlink" title="知識點 在ScrollView嵌套ListView中我們經常這樣寫"></a>知識點 在ScrollView嵌套ListView中我們經常這樣寫</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> height = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE&gt;&gt;<span class="number">2</span>, MeasureSpec.AT_MOST);</div><div class="line">        <span class="keyword">super</span>.onMeasure(widthMeasureSpec, height);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>就是因爲本身他的父控件ScrollView屬性是MeasureSpec.UNSPECIFIED listview本身的屬性也變成這樣，需要我們手動來更改成爲MeasureSpec.AT_MOST,讓listView重新計算自己的高度–onMeasure()中 heightSize就是我們傳入的30位的最大值<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (heightMode == MeasureSpec.AT_MOST) &#123;</div><div class="line">            <span class="comment">// <span class="doctag">TODO:</span> after first layout we should maybe start at the first visible position, not 0</span></div><div class="line">            heightSize = measureHeightOfChildren(widthMeasureSpec, <span class="number">0</span>, NO_POSITION, heightSize, -<span class="number">1</span>);</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>將方法中除了我們本身傳過去的heightSize以外的代碼刪除 發現本身就命名爲maxHeight，如果 測量的高度不大於我們的maxHeight就將測量值(所有子View的高度)返回，所以這樣重寫之後，listView默認展示所有的條目，如果不是最大值那麽如果測量值大於你設定的值那麽也將顯示不全<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">measureHeightOfChildren</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> startPosition, <span class="keyword">int</span> endPosition,</span></span></div><div class="line">           <span class="keyword">int</span> maxHeight, <span class="keyword">int</span> disallowPartialChildPosition) &#123;</div><div class="line"></div><div class="line">       <span class="comment">// Include the padding of the list</span></div><div class="line">       <span class="keyword">int</span> returnedHeight = mListPadding.top + mListPadding.bottom;</div><div class="line">                      .</div><div class="line">                      .</div><div class="line">                      .</div><div class="line">       <span class="keyword">for</span> (i = startPosition; i &lt;= endPosition; ++i) &#123;</div><div class="line"></div><div class="line">           returnedHeight += child.getMeasuredHeight();</div><div class="line"></div><div class="line">           <span class="keyword">if</span> (returnedHeight &gt;= maxHeight) &#123;</div><div class="line">               <span class="comment">// We went over, figure out which height to return.  If returnedHeight &gt; maxHeight,</span></div><div class="line">               <span class="comment">// then the i'th position did not fit completely.</span></div><div class="line">               <span class="keyword">return</span> (disallowPartialChildPosition &gt;= <span class="number">0</span>) <span class="comment">// Disallowing is enabled (&gt; -1)</span></div><div class="line">                           &amp;&amp; (i &gt; disallowPartialChildPosition) <span class="comment">// We've past the min pos</span></div><div class="line">                           &amp;&amp; (prevHeightWithoutPartialChild &gt; <span class="number">0</span>) <span class="comment">// We have a prev height</span></div><div class="line">                           &amp;&amp; (returnedHeight != maxHeight) <span class="comment">// i'th child did not fit completely</span></div><div class="line">                       ? prevHeightWithoutPartialChild</div><div class="line">                       : maxHeight;</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           <span class="keyword">if</span> ((disallowPartialChildPosition &gt;= <span class="number">0</span>) &amp;&amp; (i &gt;= disallowPartialChildPosition)) &#123;</div><div class="line">               prevHeightWithoutPartialChild = returnedHeight;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">// At this point, we went through the range of children, and they each</span></div><div class="line">       <span class="comment">// completely fit, so return the returnedHeight</span></div><div class="line">       <span class="keyword">return</span> returnedHeight;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<h2 id="layout"><a href="#layout" class="headerlink" title="layout"></a>layout</h2><h3 id="onlayout-這個方法是ViewGroup方法需要重寫的方法"><a href="#onlayout-這個方法是ViewGroup方法需要重寫的方法" class="headerlink" title="onlayout() 這個方法是ViewGroup方法需要重寫的方法"></a>onlayout() 這個方法是ViewGroup方法需要重寫的方法</h3><p>首先是View的layout()方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">layout</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> ((mPrivateFlags3 &amp; PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT) != <span class="number">0</span>) &#123;</div><div class="line">            onMeasure(mOldWidthMeasureSpec, mOldHeightMeasureSpec);</div><div class="line">            mPrivateFlags3 &amp;= ~PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT;</div><div class="line">        &#125;</div><div class="line">                `</div><div class="line">                `</div><div class="line">                `</div><div class="line">        <span class="keyword">boolean</span> changed = isLayoutModeOptical(mParent) ?</div><div class="line">                setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (changed || (mPrivateFlags &amp; PFLAG_LAYOUT_REQUIRED) == PFLAG_LAYOUT_REQUIRED) &#123;</div><div class="line">            onLayout(changed, l, t, r, b);</div><div class="line">                `</div><div class="line">                `</div><div class="line">                ``</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mPrivateFlags &amp;= ~PFLAG_FORCE_LAYOUT;</div><div class="line">        mPrivateFlags3 |= PFLAG3_IS_LAID_OUT;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>判斷changed setOpticalFrame 最終走的也是setFrame 判斷位置是否發生了變化<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">setFrame</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> top, <span class="keyword">int</span> right, <span class="keyword">int</span> bottom)</span> </span>&#123;</div><div class="line">        <span class="keyword">boolean</span> changed = <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">if</span> (mLeft != left || mRight != right || mTop != top || mBottom != bottom) &#123;</div><div class="line">            changed = <span class="keyword">true</span>;</div><div class="line">              `</div><div class="line">              `</div><div class="line">        <span class="keyword">return</span> changed;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>發生變化走onLayout方法====viewGroup調用onLayout方法 在各個的onlayou方法中調用view的layou方法確定位置</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>父View的layout方法調用父View的onlyout調用子View的layout</p>
+<p>父view的onLayout來確定子View的具體位置 子View的layout方法來確定滋生的位置  </p>
+<p>其中所有的位置都是相當於父控件的 包括View.getleft 等方法也是相對於父控件的</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+            <a href="/tags/view/" rel="tag"># view</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/21/okhttp/" rel="next" title="OkHttp3-从零开始的详细使用到简单封装">
+                <i class="fa fa-chevron-left"></i> OkHttp3-从零开始的详细使用到简单封装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/20/停止-builiding/" rel="prev" title="停止 builiding">
+                停止 builiding <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://omy391n59.bkt.clouddn.com/image/jpg/avater.jpg"
+               alt="eason" />
+          <p class="site-author-name" itemprop="name">eason</p>
+           
+              <p class="site-description motion-element" itemprop="description">云雷屯，君子以经纶</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/jlcclidong" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/6440034a810a" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义控件学习笔记"><span class="nav-number">1.</span> <span class="nav-text">自定义控件学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#总体调用流程"><span class="nav-number">1.1.</span> <span class="nav-text">总体调用流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewRootImpl-是View开始的入口"><span class="nav-number">1.1.1.</span> <span class="nav-text">ViewRootImpl 是View开始的入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewRootImpl中会首先调用performTraversals"><span class="nav-number">1.1.2.</span> <span class="nav-text">ViewRootImpl中会首先调用performTraversals()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#measure"><span class="nav-number">1.2.</span> <span class="nav-text">measure</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewGroup-中measureChildWithMargins-调用-View的measure"><span class="nav-number">1.2.1.</span> <span class="nav-text">ViewGroup 中measureChildWithMargins 调用 View的measure()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#view的measure-childWidthMeasureSpec-childHeightMeasureSpec-方法"><span class="nav-number">1.2.2.</span> <span class="nav-text">view的measure(childWidthMeasureSpec, childHeightMeasureSpec)方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重点强调的是-自定义控件的onmeasure方法重写-必须设定WRAP-CONTENT时的状态"><span class="nav-number">1.2.3.</span> <span class="nav-text">重点强调的是 自定义控件的onmeasure方法重写 必须设定WRAP_CONTENT时的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#知識點-在ScrollView嵌套ListView中我們經常這樣寫"><span class="nav-number">1.2.4.</span> <span class="nav-text">知識點 在ScrollView嵌套ListView中我們經常這樣寫</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layout"><span class="nav-number">1.3.</span> <span class="nav-text">layout</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#onlayout-這個方法是ViewGroup方法需要重寫的方法"><span class="nav-number">1.3.1.</span> <span class="nav-text">onlayout() 這個方法是ViewGroup方法需要重寫的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#總結"><span class="nav-number">1.3.2.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">eason</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

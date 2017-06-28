@@ -1,0 +1,761 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="library,animation," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="GitHub - jlcclidong/AddCartAniamtion: 仿美团外卖添加动画的三方库1.初衷公司要做一个点餐系统，要求类似要的美团外卖的点餐动画，就像下面这样一个抛物线（biu）  身为一个把时间节约全部投入到工作中的程序员，baidu geogle了好久发现没有这个动画效果的具体实现.有的效果也不是很好，只好自己写一个这样的效果了(搬砖去了)">
+<meta name="keywords" content="library,animation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="仿美团外卖添加商品的抛物线动画">
+<meta property="og:url" content="http://yoursite.com/2017/03/17/仿美团外卖添加商品的抛物线动画/index.html">
+<meta property="og:site_name" content="薛定谔">
+<meta property="og:description" content="GitHub - jlcclidong/AddCartAniamtion: 仿美团外卖添加动画的三方库1.初衷公司要做一个点餐系统，要求类似要的美团外卖的点餐动画，就像下面这样一个抛物线（biu）  身为一个把时间节约全部投入到工作中的程序员，baidu geogle了好久发现没有这个动画效果的具体实现.有的效果也不是很好，只好自己写一个这样的效果了(搬砖去了)">
+<meta property="og:image" content="http://omy391n59.bkt.clouddn.com/image/addcart1905930-f419e78607521fb6.gif">
+<meta property="og:image" content="http://omy391n59.bkt.clouddn.com/image/addcart1905930-a9a2726a504ab56f.gif">
+<meta property="og:updated_time" content="2017-04-19T05:53:35.013Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="仿美团外卖添加商品的抛物线动画">
+<meta name="twitter:description" content="GitHub - jlcclidong/AddCartAniamtion: 仿美团外卖添加动画的三方库1.初衷公司要做一个点餐系统，要求类似要的美团外卖的点餐动画，就像下面这样一个抛物线（biu）  身为一个把时间节约全部投入到工作中的程序员，baidu geogle了好久发现没有这个动画效果的具体实现.有的效果也不是很好，只好自己写一个这样的效果了(搬砖去了)">
+<meta name="twitter:image" content="http://omy391n59.bkt.clouddn.com/image/addcart1905930-f419e78607521fb6.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/17/仿美团外卖添加商品的抛物线动画/"/>
+
+
+
+
+
+  <title> 仿美团外卖添加商品的抛物线动画 | 薛定谔 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?60aa663d33fe2a71d585c309366f96ff";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">薛定谔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/17/仿美团外卖添加商品的抛物线动画/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="eason">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://omy391n59.bkt.clouddn.com/image/jpg/avater.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="薛定谔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                仿美团外卖添加商品的抛物线动画
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-17T16:40:11+08:00">
+                2017-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/library/" itemprop="url" rel="index">
+                    <span itemprop="name">library</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="GitHub-jlcclidong-AddCartAniamtion-仿美团外卖添加动画的三方库"><a href="#GitHub-jlcclidong-AddCartAniamtion-仿美团外卖添加动画的三方库" class="headerlink" title="GitHub - jlcclidong/AddCartAniamtion: 仿美团外卖添加动画的三方库"></a><a href="https://github.com/jlcclidong/AddCartAniamtion" target="_blank" rel="external">GitHub - jlcclidong/AddCartAniamtion: 仿美团外卖添加动画的三方库</a></h1><h2 id="1-初衷"><a href="#1-初衷" class="headerlink" title="1.初衷"></a>1.初衷</h2><p>公司要做一个点餐系统，要求类似要的美团外卖的点餐动画，就像下面这样一个抛物线（biu）</p>
+<p><img src="http://omy391n59.bkt.clouddn.com/image/addcart1905930-f419e78607521fb6.gif" alt="美团的动画"></p>
+<p>身为一个把时间节约全部投入到工作中的程序员，baidu geogle了好久发现没有这个动画效果的具体实现.有的效果也不是很好，只好自己写一个这样的效果了(搬砖去了)<br><a id="more"></a></p>
+<h2 id="2-结果"><a href="#2-结果" class="headerlink" title="2.结果"></a>2.结果</h2><p>结果demo就是和下面一样做的一个动画效果<br><img src="http://omy391n59.bkt.clouddn.com/image/addcart1905930-a9a2726a504ab56f.gif" alt="自己的动画
+"></p>
+<p>可以直接使用拷贝这个类或者在Project中build.gradle添加<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">allprojects&#123;</div><div class="line">  repositories&#123;</div><div class="line">    ...</div><div class="line">    maven&#123;url<span class="string">"https://jitpack.io"</span>&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在Moudle中的build.gradle<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies&#123;</div><div class="line">  compile<span class="string">'com.github.jlcclidong:AddCartAniamtion:v3.0'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>直接使用AddCartAniamtion.AddToCart()完成动画，图片默认为填入ImageView的图片，想要自己更改的可以去源码中更改，本人水平有限，希望多交流。</p>
+<p>自己使用在RecycleView中没有问题。动画左右飞都木有问题。</p>
+<h2 id="3-过程"><a href="#3-过程" class="headerlink" title="3.过程"></a>3.过程</h2><p>本身看到过一个用贝塞尔曲线来做这个效果的，效果不好(好吧，主要是自己数学实在不争气)<br>身为程序员里物理学的最好的还是用物理公式来解决问题吧，加属性动画</p>
+<p>首先确定父控件，起始位置控件，以及终点位置控件位置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//计算父控件的位置</span></div><div class="line"><span class="keyword">int</span>[] parent =<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</div><div class="line">rl.getLocationInWindow(parent);</div><div class="line"></div><div class="line"><span class="comment">//计算起点控件位置</span></div><div class="line"><span class="keyword">int</span>[] startLocation =<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</div><div class="line">startView.getLocationInWindow(startLocation);</div><div class="line"></div><div class="line"><span class="comment">//计算终点控件位置</span></div><div class="line"><span class="keyword">int</span>[] endLocation =<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</div><div class="line">endView.getLocationInWindow(endLocation);</div></pre></td></tr></table></figure>
+<p>添加一个用于ImageView用于动画（注意确定添加的位置是一定要注意父控件的Padding值，因为这个错位了好久）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> ImageView view =newImageView(mContext);</div><div class="line"></div><div class="line"><span class="comment">//确定ImageView大小与传进来的ImageView相同</span></div><div class="line">RelativeLayout.LayoutParams params =<span class="keyword">new</span> RelativeLayout.LayoutParams(startView.getWidth(),startView.getHeight());</div><div class="line"></div><div class="line"><span class="comment">//获取ImageView的图片 并设置在新的ImageView上</span></div><div class="line">view.setImageDrawable(startView.getDrawable());</div><div class="line"></div><div class="line"><span class="comment">//确定ImageView的位置与startView相同</span></div><div class="line">params.leftMargin= startLocation[<span class="number">0</span>] - parent[<span class="number">0</span>] - rl.getPaddingLeft();</div><div class="line">params.topMargin= startLocation[<span class="number">1</span>] - parent[<span class="number">1</span>] - rl.getPaddingTop();</div><div class="line"></div><div class="line">rl.addView(view,params);</div></pre></td></tr></table></figure></p>
+<p>好吧重点来了 我把初始的X轴Y轴速度设成相同的这样保证了上移的效果 然后根据时间 距离计算初速度 加速度 基本就用到了这么一个公式</p>
+<pre><code>s=vt+g*t*t/2
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//计算两者的横向X轴的距离差</span></div><div class="line"><span class="keyword">int</span> XtoX = endLocation[<span class="number">0</span>] - startLocation[<span class="number">0</span>] + endView.getWidth() /<span class="number">2</span>-</div><div class="line">startView.getWidth() /<span class="number">2</span>;</div><div class="line"></div><div class="line"><span class="comment">//根据距离 时间 获取到对应的X轴的初速度</span></div><div class="line"><span class="keyword">final</span> <span class="keyword">float</span> xv = XtoX / time;</div><div class="line"></div><div class="line"><span class="comment">//计算两者的横向X轴的距离差</span></div><div class="line"><span class="keyword">int</span> YtoY = endLocation[<span class="number">1</span>] - startLocation[<span class="number">1</span>];</div><div class="line"></div><div class="line"><span class="comment">//根据距离 时间 初始设置的Y轴初速度与X轴初速度相同 获取到竖直方向上的加速度</span></div><div class="line"><span class="keyword">final</span> <span class="keyword">float</span> g;</div><div class="line"><span class="keyword">if</span>(xv&gt;<span class="number">0</span>) &#123;</div><div class="line">  g = (YtoY + xv * time) / time / time *<span class="number">2</span>;</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">  g = (YtoY - xv * time) / time / time *<span class="number">2</span>;</div><div class="line">&#125;</div><div class="line">设置属性动画了</div><div class="line"></div><div class="line">ValueAnimator va =<span class="keyword">new</span> ValueAnimator();</div><div class="line">va.setDuration(time *<span class="number">1000</span>);</div><div class="line">va.setObjectValues(newPointF(<span class="number">0</span>,<span class="number">0</span>));</div><div class="line"></div><div class="line"><span class="comment">//计算位置</span></div><div class="line"></div><div class="line">va.setEvaluator(<span class="keyword">new</span> TypeEvaluator() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Point <span class="title">Fevaluate</span><span class="params">(<span class="keyword">float</span> v,PointF pointF,PointF t1)</span> </span>&#123;</div><div class="line">        PointF point =newPointF();</div><div class="line">        point.x= v *xv*time;</div><div class="line">        <span class="keyword">if</span>(xv&gt;<span class="number">0</span>) &#123;</div><div class="line">          point.y=g* (v *time) * (v *time) /<span class="number">2</span>-xv* v *time;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">          point.y=g* (v *time) * (v *time) /<span class="number">2</span>+xv* v *time;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> point;</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">  <span class="comment">//设置动画</span></div><div class="line">va.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator valueAnimator)</span> </span>&#123;</div><div class="line">    PointF point = (PointF)valueAnimator.getAnimatedValue();</div><div class="line">    view.setTranslationX(point.x);</div><div class="line">    view.setTranslationY(point.y);</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line">设置成功 开启动画 最后监听动画结束时remove这个ImageView</div></pre></td></tr></table></figure>
+<h2 id="4-结束语"><a href="#4-结束语" class="headerlink" title="4.结束语"></a>4.结束语</h2><p>写逻辑代码写的久了很多时候就会忘了一般的动画实现，这个动画实现虽然没什么含金量，但是很多项目中都可能会用得到可以直接使用还是很方便的，大神掠过，新接触android动画的还是可以看看的，代码内注释很详细。</p>
+<p><a href="https://github.com/jlcclidong/AddCartAniamtion" target="_blank" rel="external">源码在这里 GitHub - jlcclidong/AddCartAniamtion: 仿美团外卖添加动画的三方库</a></p>
+<p>这个库的主要灵感感谢</p>
+<p><a href="http://blog.csdn.net/lmj623565791/article/details/38067475" target="_blank" rel="external">Android 属性动画（Property Animation） 完全解析 （上） - Hongyang - 博客频道 - CSDN.NET</a></p>
+<p><a href="http://blog.csdn.net/android_study_ok/article/details/51540759" target="_blank" rel="external">把商品添加到购物车的动画效果（贝塞尔曲线） - Android_Study_OK的博客 - 博客频道 - CSDN.NET</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/library/" rel="tag"># library</a>
+          
+            <a href="/tags/animation/" rel="tag"># animation</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/20/停止-builiding/" rel="next" title="停止 builiding">
+                <i class="fa fa-chevron-left"></i> 停止 builiding
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://omy391n59.bkt.clouddn.com/image/jpg/avater.jpg"
+               alt="eason" />
+          <p class="site-author-name" itemprop="name">eason</p>
+           
+              <p class="site-description motion-element" itemprop="description">云雷屯，君子以经纶</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/jlcclidong" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/6440034a810a" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub-jlcclidong-AddCartAniamtion-仿美团外卖添加动画的三方库"><span class="nav-number">1.</span> <span class="nav-text">GitHub - jlcclidong/AddCartAniamtion: 仿美团外卖添加动画的三方库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-初衷"><span class="nav-number">1.1.</span> <span class="nav-text">1.初衷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-结果"><span class="nav-number">1.2.</span> <span class="nav-text">2.结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-过程"><span class="nav-number">1.3.</span> <span class="nav-text">3.过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-结束语"><span class="nav-number">1.4.</span> <span class="nav-text">4.结束语</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">eason</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

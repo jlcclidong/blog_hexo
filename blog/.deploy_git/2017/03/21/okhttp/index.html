@@ -1,0 +1,819 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="okhttp,library," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Github地址—MyOkhttpUtils初衷对于okhttp3出来以后，使用的都是网上封装好的库，为了更好地理解封装的内容，对okhttp本身的熟悉，肯定学一下子了，网上okhttp的方法很多，但是网上okhttp3方面的东西并不多，很多都过时的方法，总结了一下，讲了一下okhttp3的基本使用方法，在下边要耐心才会 。封装了一下基本大家使用得到的功能，想用的话可以直接拿去用，想扩展的话也可以">
+<meta name="keywords" content="okhttp,library">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OkHttp3-从零开始的详细使用到简单封装">
+<meta property="og:url" content="http://yoursite.com/2017/03/21/okhttp/index.html">
+<meta property="og:site_name" content="薛定谔">
+<meta property="og:description" content="Github地址—MyOkhttpUtils初衷对于okhttp3出来以后，使用的都是网上封装好的库，为了更好地理解封装的内容，对okhttp本身的熟悉，肯定学一下子了，网上okhttp的方法很多，但是网上okhttp3方面的东西并不多，很多都过时的方法，总结了一下，讲了一下okhttp3的基本使用方法，在下边要耐心才会 。封装了一下基本大家使用得到的功能，想用的话可以直接拿去用，想扩展的话也可以">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1905930-18b22cdf6f936fe5.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-04-19T05:53:35.013Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OkHttp3-从零开始的详细使用到简单封装">
+<meta name="twitter:description" content="Github地址—MyOkhttpUtils初衷对于okhttp3出来以后，使用的都是网上封装好的库，为了更好地理解封装的内容，对okhttp本身的熟悉，肯定学一下子了，网上okhttp的方法很多，但是网上okhttp3方面的东西并不多，很多都过时的方法，总结了一下，讲了一下okhttp3的基本使用方法，在下边要耐心才会 。封装了一下基本大家使用得到的功能，想用的话可以直接拿去用，想扩展的话也可以">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1905930-18b22cdf6f936fe5.gif?imageMogr2/auto-orient/strip">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/21/okhttp/"/>
+
+
+
+
+
+  <title> OkHttp3-从零开始的详细使用到简单封装 | 薛定谔 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?60aa663d33fe2a71d585c309366f96ff";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">薛定谔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/21/okhttp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="eason">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://omy391n59.bkt.clouddn.com/image/jpg/avater.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="薛定谔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                OkHttp3-从零开始的详细使用到简单封装
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-21T10:24:15+08:00">
+                2017-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/library/" itemprop="url" rel="index">
+                    <span itemprop="name">library</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Github地址—MyOkhttpUtils"><a href="#Github地址—MyOkhttpUtils" class="headerlink" title="Github地址—MyOkhttpUtils"></a><a href="https://github.com/jlcclidong/MyOkhttpUtils" target="_blank" rel="external">Github地址—MyOkhttpUtils</a></h1><h2 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h2><p>对于okhttp3出来以后，使用的都是网上封装好的库，为了更好地理解封装的内容，对okhttp本身的熟悉，肯定学一下子了，网上okhttp的方法很多，但是网上okhttp3方面的东西并不多，很多都过时的方法，总结了一下，讲了一下okhttp3的基本使用方法，在下边要耐心才会 。<br>封装了一下基本大家使用得到的功能，想用的话可以直接拿去用，想扩展的话也可以直接下载扩展，代码比较少，不了解okhttp的可以下载学习一下，大神门口右走吧。<br>封装逻辑和使用的好多方法找不到，借鉴了两位大神的逻辑，相当于简化版本吧，封装的比较全面的可以参照<br><a href="https://github.com/hongyangAndroid/okhttputils" target="_blank" rel="external">hongyangAndroid / okhttputils</a><br><a href="https://github.com/jeasonlzy/okhttp-OkGo" target="_blank" rel="external">jeasonlzy/okhttp-OkGo</a></p>
+<h2 id="本文中库的简单使用介绍"><a href="#本文中库的简单使用介绍" class="headerlink" title="本文中库的简单使用介绍"></a>本文中库的简单使用介绍</h2><ul>
+<li><p>在project中添加依赖</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"> allprojects &#123;</div><div class="line">	repositories &#123;</div><div class="line">		...</div><div class="line">		maven &#123; url <span class="string">'https://jitpack.io'</span> &#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在app中添加依赖</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">   dependencies &#123;</div><div class="line">      compile <span class="string">'com.github.jlcclidong:MyOkhttpUtils:0.10'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>在本项目中使用okhttp的方法步骤<br>在application中初始化，此步骤必须，别忘记在清单文件中注册application否则不能使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Ok.init(<span class="keyword">this</span>)</div><div class="line">         .connectTimeout(<span class="number">3000l</span>, TimeUnit.MILLISECONDS)</div><div class="line">         .readTimeout(<span class="number">3000l</span>, TimeUnit.MILLISECONDS)</div><div class="line">         .commonParams(<span class="string">"haha"</span>,<span class="string">"1"</span>) <span class="comment">//添加公共参数</span></div><div class="line">         .commonHeader(<span class="string">"nihao"</span>,<span class="string">"1"</span>)  <span class="comment">//添加公共头</span></div><div class="line">         <span class="comment">//這兩個攔截器衹能選用一個</span></div><div class="line">         <span class="comment">//.AppInterceptor("eason", new LogInterceptor())   //应用拦截器</span></div><div class="line">         .NetWorkInterceptor(<span class="string">"eason"</span>,<span class="keyword">new</span> LogInterceptor()) <span class="comment">//网络拦截器 将重定向等的request response页拦截打印  </span></div><div class="line">         .CookieJar(<span class="keyword">new</span> PersistentCookieJar(<span class="keyword">new</span> SetCookieCache(), <span class="keyword">new</span> SharedPrefsCookiePersistor(App.<span class="keyword">this</span>)))</div><div class="line">         .build();</div></pre></td></tr></table></figure>
+</li>
+<li><p>请求  其中callback有三种类型 fail都会返回Exception，不管是本身网络问题还是404等问题都会返回此回调，可以通过Exception类型进行自行处理</p>
+<ul>
+<li>callback有三种类型<ul>
+<li>JsonCallback<t> 传入类自动转换成bean，但是并未处理超大Json文件OOM 可自行通过流的方式来处理解析</t></li>
+<li>CallBack 返回String</li>
+<li>FileCallBack(String dir, String filename) 其中传入文件夹和文件名来保存 返回进度(0-100)</li>
+</ul>
+</li>
+<li><p>get</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Ok.get().url(<span class="string">"http://lab.zuimeia.com/wallpaper/category/1/"</span>)</div><div class="line">        .param(<span class="string">"page_size"</span>, <span class="number">1</span>)</div><div class="line">        .build()</div><div class="line">        .call(<span class="keyword">new</span> JsonCallBack&lt;Bean&gt;() &#123;  <span class="comment">//傳入實體類</span></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fail</span><span class="params">(Exception e)</span> </span>&#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">success</span><span class="params">(Bean bean)</span> </span>&#123;</div><div class="line">                mTv.setText(bean.getData().getBase_url());</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>post  支持键值对和文件表单上传</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Ok.post().url(<span class="string">"https://www.baidu.com"</span>)</div><div class="line">        .param(<span class="string">"test"</span>, <span class="number">1</span>)</div><div class="line">        .file(<span class="string">"test"</span>, <span class="keyword">new</span> File(<span class="string">""</span>))</div><div class="line">        .build()</div><div class="line">        .call(<span class="keyword">new</span> CallBack() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fail</span><span class="params">(Exception e)</span> </span>&#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">success</span><span class="params">(String response)</span> </span>&#123;</div><div class="line">                mTv.setText(response);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>postjson  支持postJSON</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Ok.postJson().url(<span class="string">""</span>)</div><div class="line">    .json(<span class="string">""</span>)</div><div class="line">    .build()</div><div class="line">    .call(<span class="keyword">new</span> CallBack() &#123;</div><div class="line">          <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fail</span><span class="params">(Exception e)</span> </span>&#123;</div><div class="line"></div><div class="line">          &#125;</div><div class="line"></div><div class="line">          <span class="meta">@Override</span></div><div class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">success</span><span class="params">(String response)</span> </span>&#123;</div><div class="line"></div><div class="line">          &#125;</div><div class="line">      &#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>download 文件下载只做到最基本的下载,断点续传和暂停下载暂未做，后续会追加</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Ok.download().url(<span class="string">"http://static.oschina.net/uploads/space/2015/0629/170157_rxDh_1767531.png"</span>)</div><div class="line">       .build()</div><div class="line">       .tag(MainActivity.<span class="keyword">this</span>)</div><div class="line">       .call(<span class="keyword">new</span> FileCallBack(getCacheDir().getAbsolutePath(), <span class="string">"github.png"</span>) &#123;</div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">progress</span><span class="params">(<span class="keyword">int</span> progress)</span> </span>&#123;</div><div class="line">               mTv.setText(progress + <span class="string">""</span>);</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">success</span><span class="params">(File file)</span> </span>&#123;</div><div class="line">               mIV.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fail</span><span class="params">(Exception e)</span> </span>&#123;</div><div class="line"></div><div class="line">           &#125;</div><div class="line">       &#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>取消</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ok.cancle(MainActivity.<span class="keyword">this</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p>同时支持PostJson() 和 PostFile()两种方法</p>
+</li>
+</ul>
+</li>
+<li>其中日志打印时使用了格式化JsonFormat工具类</li>
+<li>请求时自动添加了 Accept-Language 和 User-Agent</li>
+<li>简单封装没有太多的代码，可以自行下载扩展<h2 id="okhttp本身的基本使用"><a href="#okhttp本身的基本使用" class="headerlink" title="okhttp本身的基本使用"></a>okhttp本身的基本使用</h2></li>
+<li>初始化一个全局的okhttpclient<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">OkHttpClient okHttpClient = <span class="keyword">new</span> OkHttpClient.Builder()</div><div class="line">       .connectTimeout(<span class="number">3000l</span>, TimeUnit.MILLISECONDS)</div><div class="line">       .readTimeout(<span class="number">3000l</span>, TimeUnit.MILLISECONDS)</div><div class="line">       .addInterceptor( <span class="keyword">new</span> LogInterceptor())</div><div class="line">       .cookieJar(...)</div><div class="line">       .build();</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>当然初始化的方法有很多这里只是列出常用的方法，okhttp建议全局使用同一个</p>
+<ul>
+<li>为了更好的理解get，post方法，我们可以写一个interceptor来监听request和response，实现这个类不可以出现问题否则是无法进行正常请求的<br>可以在此处修改request和response的参数添加缓存设置等，可自行添加<br>主要方法有这样几个，必须重写的方法<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"> <span class="function"><span class="keyword">public</span> Response <span class="title">intercept</span><span class="params">(Chain chain)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">   Request request = chain.request();</div><div class="line">   logForRequest(request);</div><div class="line">   <span class="keyword">return</span> logForResponse(response, time);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>打印request没有什么特别注意的地方<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">logForRequest</span><span class="params">(Request request)</span> </span>&#123;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">      Log.e(<span class="string">"============request start==============="</span>);</div><div class="line">      Log.e(<span class="string">"url:"</span> + request.url());</div><div class="line">      Log.e(<span class="string">"method:"</span> + request.method());</div><div class="line">      <span class="keyword">if</span> (request.headers() != <span class="keyword">null</span> &amp;&amp; request.headers().size() &gt; <span class="number">0</span>)&#123;</div><div class="line">          Headers headers = request.headers();</div><div class="line">          <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; headers.size(); i++) &#123;</div><div class="line">              Log.e(<span class="string">"headers"</span>+headers.name(i)+<span class="string">"---"</span>+headers.value(i));</div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">      Log.e(<span class="string">"============request end================="</span>);</div><div class="line">  &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">      Log.e(<span class="string">"log request has something worng!!"</span>);</div><div class="line">  &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>打印response时注意，如果添加了interceptor则不能直接调用response.body().string()方法，调用此方法会直接close掉这个response，在callback中得不到正确的结果会报异常，只能使用response.newbuilder() 方法来使用新创建的response调用，eg<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">  <span class="function"><span class="keyword">private</span> Response <span class="title">logForResponse</span><span class="params">(Response response, <span class="keyword">long</span> time)</span> </span>&#123;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">      Log.e(<span class="string">"============response start=============="</span>);</div><div class="line">      <span class="comment">//response.body().string()只能调用一次 body()就会关掉</span></div><div class="line">      <span class="comment">//每次使用前都clone一份使用保证原来的body没有被关掉</span></div><div class="line">      Response copy = response.newBuilder().build();</div><div class="line">      Log.e(<span class="string">"responseurl:"</span> + copy.request().url());</div><div class="line">      Log.e(<span class="string">"response code:"</span> + copy.code());</div><div class="line">      Log.e(<span class="string">"total time:"</span> + time);</div><div class="line">      <span class="keyword">if</span> (!TextUtils.isEmpty(copy.message()))</div><div class="line">          Log.e(<span class="string">"message:"</span> + copy.message());</div><div class="line">          <span class="keyword">if</span> (copy.headers() != <span class="keyword">null</span> &amp;&amp; copy.headers().size() &gt; <span class="number">0</span>) &#123;</div><div class="line">              Headers headers = copy.headers();</div><div class="line">              <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; headers.size(); i++) &#123;</div><div class="line">                  Log.e(<span class="string">"\t"</span> + headers.name(i) + <span class="string">": "</span> + headers.value(i));</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">      Log.e(<span class="string">"============response end================"</span>);</div><div class="line">      ResponseBody body = copy.body();</div><div class="line">      <span class="keyword">if</span> (body != <span class="keyword">null</span>) &#123;</div><div class="line">          MediaType mediaType = body.contentType();</div><div class="line">          <span class="keyword">if</span> (mediaType != <span class="keyword">null</span>) &#123;</div><div class="line">              Log.e(<span class="string">"============response body==============="</span>);</div><div class="line">              Log.e(<span class="string">"Content-type:"</span> + mediaType.toString());</div><div class="line">              <span class="keyword">if</span> (isText(mediaType)) &#123;</div><div class="line">                  String content = body.string();</div><div class="line">                  Log.e(JsonFormat.formatJson(content));</div><div class="line">                  Log.e(<span class="string">"============response body==============="</span>);</div><div class="line">                  <span class="keyword">return</span> response.newBuilder().body(ResponseBody.create(mediaType, content)).build();</div><div class="line">              &#125; <span class="keyword">else</span> &#123;</div><div class="line">                  Log.e(<span class="string">" maybe response content too large too print , ignored!"</span>);</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">          Log.e(<span class="string">" body is null , ignored!"</span>);</div><div class="line">      &#125;</div><div class="line">  &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">      Log.e(<span class="string">"log response has something worng!!"</span>);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> response;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样每次调用http请求是就可以详细监听其中的内容了<br>全部具体内容详见github代码</p>
+<ul>
+<li><p>okhttp请求就是构建一个request加入到okhttpclicent中就可以了<br>这里实例只讲okhttp的异步请求，当然同步只是将enqueue()方法替换成execute()<br>注意这个回调的onFailure只是回调了本身请求的一些失败回调，例如超时IOException….当成功返回之后需要在onResponse中判断response.code()来判断是否是200，404，500之类的统一处理</p>
+<ul>
+<li><p>get</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Request request = <span class="keyword">new</span> Request.Builder().get()</div><div class="line">        .url(<span class="string">"https://www.baidu.com"</span>)</div><div class="line">        .header(<span class="string">"test"</span>,<span class="string">"fds"</span>)</div><div class="line">        .build();</div><div class="line">okHttpClient.newCall(request).enqueue(<span class="keyword">new</span> Callback() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(Call call, IOException e)</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(Call call, Response response)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>post<br>只需要替换request post中需要传一个requestBody，不同的post请求，需要不同的请求体，当然只是方便我们不同的需求。<br>基本的键值对上传在下面贴出，使用FormBody即可创建<br>键值对加上文件上传则需要MultipartBody来创建<br>而普通的上传json，上传文件可以直接调用RequestBody的静态方法来创建</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Request request = <span class="keyword">new</span> Request.Builder().post(<span class="keyword">new</span> FormBody.Builder().add(<span class="string">"sdf"</span>,<span class="string">"Sdfa"</span>).build())</div><div class="line">        .url(<span class="string">"https://www.baidu.com"</span>)</div><div class="line">        .header(<span class="string">"test"</span>,<span class="string">"fds"</span>)</div><div class="line">        .build();</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>其他方法详见本库中request中做的封装，都包含入内了</p>
+<ul>
+<li>https的影响，okhttps本身不添加任何代码就可以支持okhttps中公认的证书，类似于百度之类的，当时像12306这种只能手动添加了，当然也可以默认信任所有证书，具体由于本人公司并不需要就没写,推荐[ <a href="http://blog.csdn.net/lmj623565791/article/details/48129405" target="_blank" rel="external">Android Https相关完全解析 当OkHttp遇到Https</a>]</li>
+<li>cookie持久化网上有很多方法，本库采用的是<a href="https://github.com/franmontiel/PersistentCookieJar" target="_blank" rel="external">franmontiel / PersistentCookieJar</a></li>
+<li>okhttp3取消请求<br>这个是比较坑的网上传统的okhttpclicent.cancle(tag)方法发现没有了，只可以通过call.cancle来取消请求，后来发现是这样子根据tag来取消请求的，当然如果请求已经开始回调无法结束，正在上传或者下载时会产生IOException<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//隊列中的call</span></div><div class="line"><span class="keyword">for</span> (Call call : getInstance().dispatcher().queuedCalls()) &#123;</div><div class="line">    <span class="keyword">if</span> (object.equals(call.request().tag())) &#123;</div><div class="line">        call.cancel();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//運行中的call</span></div><div class="line"><span class="keyword">for</span> (Call call : getInstance().dispatcher().runningCalls()) &#123;</div><div class="line">    <span class="keyword">if</span> (object.equals(call.request().tag())) &#123;</div><div class="line">        call.cancel();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>最后<br>好像没什么了 ，感觉有帮助的帮忙点个star，辣眼睛了的我也没办法</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1905930-18b22cdf6f936fe5.gif?imageMogr2/auto-orient/strip" alt="啦啦啦啦.gif"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/okhttp/" rel="tag"># okhttp</a>
+          
+            <a href="/tags/library/" rel="tag"># library</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/30/for与foreach在List中的使用/" rel="next" title="for与foreach在List中的使用">
+                <i class="fa fa-chevron-left"></i> for与foreach在List中的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/20/自定义控件/" rel="prev" title="自定义控件">
+                自定义控件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://omy391n59.bkt.clouddn.com/image/jpg/avater.jpg"
+               alt="eason" />
+          <p class="site-author-name" itemprop="name">eason</p>
+           
+              <p class="site-description motion-element" itemprop="description">云雷屯，君子以经纶</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/jlcclidong" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/6440034a810a" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Github地址—MyOkhttpUtils"><span class="nav-number">1.</span> <span class="nav-text">Github地址—MyOkhttpUtils</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#初衷"><span class="nav-number">1.1.</span> <span class="nav-text">初衷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本文中库的简单使用介绍"><span class="nav-number">1.2.</span> <span class="nav-text">本文中库的简单使用介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#okhttp本身的基本使用"><span class="nav-number">1.3.</span> <span class="nav-text">okhttp本身的基本使用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">eason</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

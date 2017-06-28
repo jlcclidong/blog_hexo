@@ -111,6 +111,10 @@ SELECT LoginNum*CType AS la,LoginNum,CType FROM t_user WHERE Tel=15504409406
 ```sql
 SELECT LEFT(RealName,1) AS left_name from t_user WHERE Tel = 18629863729;
 ```
+  * 某字段右起几个字符
+```sql
+SELECT RIGHT(cname,2) from t_vip WHERE ID=76
+```
   * 某个字段的长度
 ```sql
 SELECT LENGTH(Tel) AS left_name from t_user
@@ -122,4 +126,28 @@ SELECT LOWER(w_wk.KeyWord) from w_wk
   * 小写变大写
 ```sql
 SELECT UPPER(w_wk.KeyWord) from w_wk
+```
+  * 去空格
+```sql
+SELECT RTRIM(LTRIM(RIGHT(cname,2))) from t_vip WHERE ID=76
+```
+  * SOUNDEX 寻找相近读音的单词
+```sql
+SELECT * from t_vip WHERE SOUNDEX(CName)=SOUNDEX('tu')
+```
+
+* 数值日期处理函数太多-----现用现查
+* 聚集函数
+  * 平均数 AVG()函数忽略列值为NULL的行。
+```sql
+select AVG(Price) AS avg from t_bk_school
+```
+  * 计数
+```sql
+select COUNT(*) AS avg from t_bk_school ; //包含null值的
+SELECT COUNT(t_bk_school.FatherID) as o from t_bk_school; //忽略列值为NULL的行
+```
+  * 最大最小值 文本数据
+```sql
+select MIN(ID) from ac_activity  ORDER BY id DESC ;
 ```
