@@ -159,12 +159,29 @@ SELECT SUM(CType) FROM t_user
 #### 分组数据
 
 * group by
+
+      GROUP BY子句可以包含任意数目的列，因而可以对分组进行嵌套，更细致地进行数据分组。 如果在GROUP BY子句中嵌套了分组，数据将在最后指定的分组上进行汇总。换句话说，在建立分组时，指定的所有列都一起计算（所以 不能从个别的列取回数据）。
+      GROUP BY子句中列出的每一列都必须是检索列或有效的表达式（但不能是聚集函数）。
+      如果在SELECT中使用表达式，则必须在GROUP BY子句中指定相同的表达式。不能使用别名。
+      大多数SQL实现不允许GROUP BY列带有长度可变的数据类型（如文本或备注型字段）。 除聚集计算语句外，SELECT语句中的每一列都必须在GROUP BY子句中给出。
+      如果分组列中包含具有NULL值的行，则NULL将作为一个分组返回。如果列中有多行NULL值，它们将分为一组。 GROUP BY子句必须出现在WHERE子句之后，ORDER BY子句之前。
 ```sql
 SELECT CType,COUNT(*) as num from t_user group by CType
 SELECT Gender,CType,COUNT(*) as num from t_user group by CType,Gender
-GROUP BY子句可以包含任意数目的列，因而可以对分组进行嵌套，更细致地进行数据分组。 如果在GROUP BY子句中嵌套了分组，数据将在最后指定的分组上进行汇总。换句话说，在建立分组时，指定的所有列都一起计算（所以 不能从个别的列取回数据）。
-GROUP BY子句中列出的每一列都必须是检索列或有效的表达式（但不能是聚集函数）。
-如果在SELECT中使用表达式，则必须在GROUP BY子句中指定相同的表达式。不能使用别名。
-大多数SQL实现不允许GROUP BY列带有长度可变的数据类型（如文本或备注型字段）。 除聚集计算语句外，SELECT语句中的每一列都必须在GROUP BY子句中给出。
-如果分组列中包含具有NULL值的行，则NULL将作为一个分组返回。如果列中有多行NULL值，它们将分为一组。 GROUP BY子句必须出现在WHERE子句之后，ORDER BY子句之前。
 ```
+
+* Having
+```sql
+SELECT CType,Gender,COUNT(*) from t_user GROUP BY Gender,CType HAVING CType<2
+// HAVING 与 GROUP BY 共同使用时 子句中除了聚集函数外 使用的列必须在group by中使用
+// WHERE在数据分组前进行过滤，HAVING在数据分组后进行过滤
+```
+
+
+#### 子查询
+
+```sql
+SELECT * FROM t_user_authority WHERE UserID = (SELECT ID FROM t_user WHERE t_user.Tel = 155044094061)
+```
+
+注意使用完全限定名
