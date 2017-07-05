@@ -15,7 +15,7 @@ tags:
   ```sql
    SELECT RealName FROM t_user
   ```
-
+<!-- more -->
 * 检索多个列
   ```sql
      SELECT RealName,Gender FROM t_user

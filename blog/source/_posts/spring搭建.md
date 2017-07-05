@@ -22,7 +22,7 @@ tags:
 			<version>4.3.9.RELEASE</version>
 </dependency>
 ```
-
+<!-- more -->
 * 在web.xml中添加配置
 ```xml
 <servlet>

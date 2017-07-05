@@ -55,7 +55,7 @@ tags:
     </filter-mapping>
 </web-app>
 ```
-* 在src中创建struts.xml
+* 在src中创建struts.xml 如果是maven创建的话应该放在src/main/resourse下
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>    
 <!DOCTYPE struts PUBLIC    
